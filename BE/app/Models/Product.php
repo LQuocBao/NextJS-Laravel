@@ -18,6 +18,11 @@ class Product extends Model
         return $this->belongsTo(Review::class);
     }
 
+    public function orderDetail()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
     // @foreach ($reviews as $index => $review)
     //                                 <div class="review">
     //                                     <p><strong>User:</strong> {{ $reviewNames[$index] ?? 'Anonymous' }}</p>

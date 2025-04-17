@@ -1,19 +1,33 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::get('/user', function (Request $request) {
     return $request->user();
-});
+})->middleware('auth:sanctum');
+
+//dùng khi có api đăng ký, đăng nhập
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::resource('user', UserController::class);
+//  });
+
+
+Route::resource('product', ProductController::class)->middleware('auth:sanctum');
+// ->middleware('auth:sanctum\\');
+//có api login & register mới dùng auth sanctum
+
+Route::resource('user', UserController::class)->middleware('auth:sanctum');
+
+Route::resource('category', CategoryController::class)->middleware('auth:sanctum');
+
+Route::resource('order', OrderController::class)->middleware('auth:sanctum');
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
